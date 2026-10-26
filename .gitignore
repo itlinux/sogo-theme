@@ -4,3 +4,14 @@ generator/angular*.min.js
 # Your own logos; the repo ships none.
 brand/*.png
 brand/*.svg
+
+# Agent and editor scaffolding: never part of what gets shared.
+.claude/
+CLAUDE.md
+AGENTS.md
+GEMINI.md
+.cursor/
+.vscode/
+docs/superpowers/
+.DS_Store
+._*
