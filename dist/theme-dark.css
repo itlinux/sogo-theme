@@ -197,3 +197,109 @@ html .md-whiteframe-3dp.layout-column {
   border-bottom: 2px solid #ff8c00 !important;
 }
 html .sg-logo { background-color: transparent !important; }
+
+/* ---------------------------------------------------------------------------
+   Dialogs. SOGo carries
+
+       md-dialog { background-color: #fff !important }
+
+   in its own styles.css. That is the same specificity as the `md-dialog` rule
+   near the top of this file and it is served later, so it wins: every dialog
+   stayed white while the theme painted its text light, and "New Addressbook"
+   was white-on-white. Prefixing with `html` takes it back, the same trick the
+   login page needed.
+   --------------------------------------------------------------------------- */
+html md-dialog,
+html md-dialog md-content,
+html md-dialog md-dialog-content,
+html md-dialog md-dialog-content.sg-dialog-message,
+html md-dialog md-dialog-content.sg-dialog-message.ng-hide,
+html md-dialog .md-dialog-content,
+html md-dialog md-input-container {
+  background-color: #272727 !important;
+  color: #d0d7e2 !important;
+}
+html md-dialog md-toolbar,
+html md-dialog .md-toolbar-tools {
+  background-color: #1f1f1f !important;
+  color: #d0d7e2 !important;
+}
+html md-dialog h2,
+html md-dialog .md-title,
+html md-dialog .md-dialog-content-body { color: #d0d7e2 !important; }
+html md-dialog md-dialog-actions .md-button { color: #d0d7e2 !important; }
+html md-dialog md-dialog-actions .md-button.md-primary,
+html md-dialog md-dialog-actions .md-button:hover { color: #ff8c00 !important; }
+
+/* The suggestion list that drops out of an autocomplete field sits in its own
+   container outside the dialog, so it needs saying separately. */
+html .md-autocomplete-suggestions-container,
+html md-virtual-repeat-container.md-autocomplete-suggestions-container,
+html .md-autocomplete-suggestions,
+html .md-autocomplete-suggestions li {
+  background-color: #272727 !important;
+  color: #d0d7e2 !important;
+}
+html .md-autocomplete-suggestions li.selected,
+html .md-autocomplete-suggestions li:hover { background-color: #323232 !important; }
+
+/* ---------------------------------------------------------------------------
+   Calendar grid lines. SOGo draws them in #e6d8ba, a pale tan, which on a
+   dark background reads as a yellow-grey cage. The earlier rules in this file
+   caught the horizontal hour lines; these are the ones they missed — the
+   vertical day separators above all, which are the loudest lines on the page.
+   --------------------------------------------------------------------------- */
+html [ui-view=calendars] .days .day {
+  border-left-color: #323232 !important;
+}
+html [ui-view=calendars] .allDaysView,
+html [ui-view=calendars] .allDaysView--sidenav,
+html [ui-view=calendars] .days .day .clickableHourCell,
+html [ui-view=calendars] .hours .hour,
+html [ui-view=calendars] .minutes30 {
+  border-bottom-color: #323232 !important;
+}
+/* The band holding all-day events separates two regions rather than dividing
+   one, so it carries slightly more weight. */
+html [ui-view=calendars] .allDaysView,
+html [ui-view=calendars] .allDaysView--sidenav,
+html .hours-pane { border-bottom-color: #3d3d3d !important; }
+
+html [ui-view=calendars] .monthView .dayLabels,
+html [ui-view=calendars] .monthView md-grid-tile { border-color: #323232 !important; }
+
+/* The timepicker's own field frame comes from the same family of greys. */
+html .sg-timepicker-input-container { border-color: #3d3d3d !important; }
+html .sg-timepicker-input { color: #d0d7e2 !important; }
+
+/* ---------------------------------------------------------------------------
+   Editor panes. The contact and event editors are built from Angular Material
+   components that a generated dark theme does not fully resolve, so their text
+   can come through near-black on the dark card. These are the components those
+   forms are made of — named one by one rather than with a wildcard, because a
+   broad [class*=...] selector tints things unpredictably.
+   --------------------------------------------------------------------------- */
+html .view-detail md-card,
+html .view-detail md-card md-card-content { background-color: #272727 !important; }
+
+html .view-detail md-select .md-select-value,
+html .view-detail md-select .md-select-value > span,
+html .view-detail md-select .md-select-value .md-select-icon,
+html .view-detail md-autocomplete input,
+html .view-detail md-autocomplete-wrap input,
+html .view-detail md-datepicker input,
+html .view-detail .md-datepicker-input,
+html .view-detail md-chips .md-chip-content,
+html .view-detail md-chips input,
+html .view-detail md-card-content,
+html .view-detail .sg-form-section,
+html .view-detail .md-input,
+html .view-detail md-input-container input,
+html .view-detail md-input-container textarea {
+  color: #d0d7e2 !important;
+  -webkit-text-fill-color: #d0d7e2 !important;
+}
+html .view-detail md-input-container label,
+html .view-detail md-select .md-select-placeholder { color: #9aa3b0 !important; }
+html .view-detail md-chips .md-chip { background-color: #323232 !important; }
+html .view-detail md-input-container .md-input { border-color: #4a4a4a !important; }
