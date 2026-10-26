@@ -1,0 +1,6 @@
+# Vendored at build time from a server that runs SOGo — see README.
+generator/angular*.min.js
+
+# Your own logos; the repo ships none.
+brand/*.png
+brand/*.svg

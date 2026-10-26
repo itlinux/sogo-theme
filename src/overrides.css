@@ -1,0 +1,184 @@
+
+/* ===========================================================================
+   Overrides for SOGo's own styles.css.
+   The Angular Material theme cannot reach these: SOGo hardcodes #fff, #fafafa
+   and #e0e0e0 for the sidebar, the message list and the reading pane, which is
+   why those stayed light when only the generated theme was swapped.
+   =========================================================================== */
+
+/* Structural surfaces */
+md-sidenav, md-sidenav md-content, .md-sidenav-left, .md-sidenav-right,
+.view-list, .view-detail, .view-list md-content, .view-detail md-content {
+  background-color: #1f1f1f !important;
+  color: #d0d7e2 !important;
+}
+md-content, md-card, md-dialog, md-menu-content, md-select-menu, md-autocomplete {
+  background-color: #272727 !important;
+  color: #d0d7e2 !important;
+}
+md-list-item, md-list-item .md-list-item-inner, md-item, .md-subheader {
+  background-color: transparent !important;
+  color: #d0d7e2 !important;
+}
+.md-subheader, .sg-subheader { background-color: #1f1f1f !important; color: #9aa3b0 !important; }
+
+/* Dividers and borders: a mid surface tone instead of near-black on dark */
+md-divider, .md-divider { border-color: #3d3d3d !important; }
+
+/* Secondary text */
+.md-secondary, .sg-caption, .md-caption, small, .sg-md-subhead {
+  color: #9aa3b0 !important;
+}
+
+/* Form fields: Angular Material left the input foreground unresolved when
+   generating a dark theme, which rendered typed text and the caret
+   transparent -- including on the login page. */
+input, textarea, select,
+md-input-container input, md-input-container textarea,
+.md-default-theme input, .md-default-theme textarea {
+  color: #d0d7e2 !important;
+  caret-color: #d0d7e2 !important;
+  -webkit-text-fill-color: #d0d7e2 !important;
+}
+input::placeholder, textarea::placeholder,
+md-input-container label, .md-default-theme md-input-container label {
+  color: #9aa3b0 !important;
+  -webkit-text-fill-color: #9aa3b0 !important;
+}
+input:-webkit-autofill, input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #d0d7e2 !important;
+  -webkit-box-shadow: 0 0 0 1000px #1f1f1f inset !important;
+}
+
+/* Unread mail should stand out the way it does in a terminal:
+   brighter text, not a different background. */
+.sg-unread, ._unread, [class*="unread"] { color: #ffd866 !important; }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #1f1f1f; }
+::-webkit-scrollbar-thumb { background: #3d3d3d; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+
+
+/* ---------------------------------------------------------------------------
+   Calendar. SOGo paints this view from its own stylesheet, so none of it
+   follows the Angular Material theme:
+     .daysView / md-toolbar.monthView  #fff     the day-header row
+     .days / .monthView                #fafafa  the grid body
+     .outOfDay                         #fafafa  the out-of-hours band
+     grid lines                        rgba(0,0,0,.26) -- invisible on dark
+   --------------------------------------------------------------------------- */
+.daysView, [ui-view=calendars] md-toolbar.monthView,
+.monthView, .days, .allDaysView, .calendarView,
+.sg-time-pane, .hours-pane, .sg-calendar-list {
+  background-color: #272727 !important;
+  color: #d0d7e2 !important;
+}
+
+/* Out-of-hours reads as recessed rather than brighter, which is the way round
+   it should be on a dark theme. */
+.outOfDay, .clickableHourCell.outOfDay {
+  background-color: #1f1f1f !important;
+}
+
+/* Grid lines: surface tones, visible but not loud. */
+.clickableHourCell, [ui-view=calendars] .hours .hour {
+  border-bottom-color: #323232 !important;
+}
+.hours-pane { border-bottom-color: #3d3d3d !important; }
+.sg-timepicker-time-pane { border-color: #3d3d3d !important; }
+.sg-time-selection-indicator { background: #3d3d3d !important; }
+
+/* Day numbers and labels */
+.day, .dayLabels .day, .sg-calendar-day, .sg-calendar-tile-header,
+.sg-calendar-tile-week { color: #d0d7e2 !important; }
+.sg-date-today, .sg-calendar-date.sg-date-today { color: #ff8c00 !important; }
+
+
+/* ---------------------------------------------------------------------------
+   The rest of SOGo's hardcoded light surfaces, including a 1px solid #fff
+   border on the sidenav that draws a bright line down the edge of a dark UI.
+   --------------------------------------------------------------------------- */
+.md-sidenav-left, md-sidenav { border-right: 1px solid #323232 !important; }
+.md-sidenav-right { border-left: 1px solid #323232 !important; }
+
+.sg-form-section, .sg-has-form-sections, .sg-skeleton,
+.sg-chip-color, .sg-droppable-over, .view-detail {
+  background-color: #272727 !important;
+  color: #d0d7e2 !important;
+}
+
+/* The filter bar pinned to the bottom of the sidebar, and any toolbar or
+   input container sitting inside the sidenav. */
+md-sidenav md-toolbar, md-sidenav .md-toolbar-tools,
+md-sidenav md-input-container, md-sidenav .sg-search-field-container,
+md-sidenav md-content, md-sidenav footer, md-sidenav .md-whiteframe-1dp {
+  background-color: #1f1f1f !important;
+  color: #d0d7e2 !important;
+}
+.sg-search-field-container { color: #d0d7e2 !important; }
+
+/* Hover state in lists: a surface tone rather than mid-grey. */
+md-sidenav md-list-item.md-clickable:not([disabled]):hover,
+md-list-item.md-clickable:not([disabled]):hover {
+  background-color: #323232 !important;
+}
+
+/* ===========================================================================
+   SOGo injects its own palette at RUNTIME as inline <style> rules, built from
+   its green palette, e.g.:
+
+     .md-default-theme.md-accent.md-bg { background-color: rgb(86,176,76);
+                                         color: #fff !important }
+
+   Those land after this stylesheet with equal specificity, so they win —
+   which is why the login page stayed green while everything served from
+   theme-default.css was already dark. Prefixing with `html` raises
+   specificity enough to take it back.
+   =========================================================================== */
+html .md-default-theme.md-accent.md-bg,
+html .sg-login.md-accent.md-bg {
+  background-color: #1f1f1f !important;   /* the right half stays darker than
+                                             the card */
+  color: #d0d7e2 !important;
+}
+
+/* Everything inside the form half sits on that darker surface, so no box
+   appears around the fields. */
+html .sg-login,
+html .sg-login md-content,
+html .sg-login .sg-login-content,
+html .sg-login form,
+html .sg-login md-input-container {
+  background-color: #1f1f1f !important;
+}
+html .md-default-theme.md-accent.md-fg,
+html .md-default-theme.md-accent.md-hue-3.md-fg { color: #ff8c00 !important; }
+html .md-default-theme.md-accent.md-bdr { border-color: #ff8c00 !important; }
+html .md-default-theme.md-accent.md-hue-1.md-bg,
+html .md-default-theme.md-accent.md-hue-2.md-bg { background-color: #323232 !important; }
+html .md-default-theme.md-accent.md-hue-1.md-fg,
+html .md-default-theme.md-accent.md-hue-2.md-fg { color: #ffa94d !important; }
+
+/* The login page's other half, and the frame around it. */
+html [ui-view="login"],
+html [ui-view="login"] md-content,
+html .sg-login-content,
+html body > div[ui-view] { background-color: #272727 !important; color: #d0d7e2 !important; }
+
+/* The submit arrow is the one place the accent belongs. */
+html .sg-login md-button.md-fab,
+html .sg-login button.md-fab { background-color: #ff8c00 !important; color: #1f1f1f !important; }
+
+/* The login card. It spans BOTH halves — the logo on the left, the form on
+   the right — and SOGo paints it #fafafa, which is where the white half came
+   from. The orange rule goes here so it runs the full width, rather than on
+   .sg-login, which is only the right half. */
+html .md-whiteframe-3dp.layout-gt-md-row,
+html .md-whiteframe-3dp.layout-column {
+  background-color: #272727 !important;
+  border-top: 2px solid #ff8c00 !important;
+  border-bottom: 2px solid #ff8c00 !important;
+}
+html .sg-logo { background-color: transparent !important; }
