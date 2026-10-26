@@ -149,6 +149,41 @@ A PNG behind a `.svg` path is fine — Apache types the response from the file
 on disk. Use a transparent background; the bar is dark. Full notes, including
 sizing and what cannot be rebranded, are in `brand/README.md`.
 
+## Server-side filters, which are off by default
+
+Not theming, but it surprised us and may surprise you: SOGo ships with its
+Filters, Vacation and Forward panes inert. They need four lines in
+`/etc/sogo/sogo.conf`, and without them the Preferences pane simply has no
+filter section — nothing warns you it was never switched on.
+
+    SOGoSieveScriptsEnabled = YES;
+    SOGoSieveServer = "sieve://127.0.0.1:4190";
+    SOGoVacationEnabled = YES;
+    SOGoForwardEnabled = YES;
+
+`systemctl restart sogod` after. On a Dovecot server the prerequisites are
+usually already met — check with:
+
+    ss -lnt | grep 4190        # managesieve listening
+    rpm -q dovecot-pigeonhole  # or dpkg -l dovecot-sieve
+
+**It overwrites hand-written scripts.** SOGo generates `~/.dovecot.sieve`
+from rules it stores itself. It does not read an existing script and import
+it, so the first time a user saves a filter in SOGo, any rules they or you
+wrote by hand are gone. Back them up before enabling:
+
+    find /path/to/mailboxes -name '.dovecot.sieve' | tar -czf sieve-backup.tgz -T -
+
+**It only works where delivery runs through the LDA.** Sieve applies at
+delivery, so a domain delivered by some other agent gets a Filters pane that
+silently does nothing. Check which agent each domain uses before telling
+users the feature exists.
+
+A server-wide script in `sieve_before` is unaffected by any of this — it runs
+ahead of user rules whether or not SOGo manages them, which is the right place
+for spam sorting.
+
+
 ## Restarting sogod
 
 It drops anyone currently using webmail into Apache's "Proxy Error — Error

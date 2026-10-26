@@ -288,3 +288,162 @@ html .view-detail md-input-container label,
 html .view-detail md-select .md-select-placeholder { color: #9aa3b0 !important; }
 html .view-detail md-chips .md-chip { background-color: #323232 !important; }
 html .view-detail md-input-container .md-input { border-color: #4a4a4a !important; }
+
+/* ---------------------------------------------------------------------------
+   Mailbox names in the sidebar came through near-black. The markup is
+
+     <md-list-item class="sg-mailbox-list-item md-clickable md-default-theme
+                          md-background md-hue-1">
+
+   and `md-background` matches nothing in any stylesheet SOGo serves, so the
+   colour is inherited from a rule that does not name the folder list at all.
+   Rather than chase it, the label itself is set here. Scoped to the sidenav
+   and the list pane, both of which are uniformly dark surfaces.
+   --------------------------------------------------------------------------- */
+html md-sidenav .sg-item-name,
+html md-sidenav md-list-item .sg-item-name,
+html md-sidenav md-list-item.sg-mailbox-list-item .sg-item-name,
+html md-sidenav md-list-item .md-button,
+html md-sidenav md-list-item p,
+html md-sidenav md-list-item span,
+html .view-list .sg-item-name,
+html .view-list md-list-item .sg-item-name {
+  color: #d0d7e2 !important;
+  -webkit-text-fill-color: #d0d7e2 !important;
+}
+html md-sidenav md-list-item md-icon,
+html .view-list md-list-item md-icon { color: #9aa3b0 !important; }
+
+/* The selected mailbox keeps the accent, and must stay legible on it. */
+html md-sidenav md-list-item.sg-selected .sg-item-name,
+html md-sidenav md-list-item.md-bg.sg-selected .sg-item-name {
+  color: #ff8c00 !important;
+  -webkit-text-fill-color: #ff8c00 !important;
+}
+
+/* ---------------------------------------------------------------------------
+   The compose window.
+
+   SOGo 5 embeds CKEditor 5, which renders inline rather than inside an
+   iframe — so this stylesheet reaches it and lightened its text, while the
+   editor kept its own white background. Pale grey on white: worse than
+   leaving it alone. CKEditor 5 is themed through CSS custom properties, so
+   setting those is the supported way to do it rather than chasing .ck-*
+   selectors that change between builds.
+   --------------------------------------------------------------------------- */
+:root {
+  --ck-color-base-background: #272727;
+  --ck-color-base-foreground: #323232;
+  --ck-color-base-text: #d0d7e2;
+  --ck-color-base-border: #4a4a4a;
+  --ck-color-base-active: #ff8c00;
+  --ck-color-base-active-focus: #ffa94d;
+
+  --ck-color-toolbar-background: #1f1f1f;
+  --ck-color-toolbar-border: #4a4a4a;
+
+  --ck-color-button-default-background: transparent;
+  --ck-color-button-default-hover-background: #323232;
+  --ck-color-button-default-active-background: #3d3d3d;
+  --ck-color-button-on-background: #323232;
+  --ck-color-button-on-color: #ff8c00;
+
+  --ck-color-dropdown-panel-background: #272727;
+  --ck-color-dropdown-panel-border: #4a4a4a;
+  --ck-color-panel-background: #272727;
+  --ck-color-panel-border: #4a4a4a;
+
+  --ck-color-input-background: #1f1f1f;
+  --ck-color-input-border: #4a4a4a;
+  --ck-color-input-text: #d0d7e2;
+  --ck-color-text: #d0d7e2;
+}
+html .ck.ck-editor__editable,
+html .ck.ck-editor__main > .ck-editor__editable,
+html .ck-content,
+html .ck.ck-editor__editable_inline {
+  background-color: #272727 !important;
+  color: #d0d7e2 !important;
+}
+html .ck.ck-toolbar { background-color: #1f1f1f !important; border-color: #4a4a4a !important; }
+html .ck.ck-button, html .ck.ck-button .ck-button__label { color: #d0d7e2 !important; }
+html .ck.ck-button.ck-on { color: #ff8c00 !important; }
+
+/* Recipients. An address becomes a chip once entered, and Angular Material
+   gives chips a light background — which, with the theme's light text on it,
+   left the addresses invisible. These are outside .view-detail, so the
+   editor-pane rules above do not reach them. */
+html md-chips md-chip,
+html md-chips .md-chip,
+html .md-chips md-chip {
+  background-color: #323232 !important;
+  color: #d0d7e2 !important;
+}
+html md-chips md-chip .md-chip-content,
+html md-chips md-chip .md-chip-content strong,
+html md-chips md-chip .md-chip-content span {
+  color: #d0d7e2 !important;
+  -webkit-text-fill-color: #d0d7e2 !important;
+}
+html md-chips md-chip md-icon,
+html md-chips md-chip .md-chip-remove md-icon { color: #9aa3b0 !important; }
+html md-chips .md-chip-input-container input,
+html md-chips input,
+html md-autocomplete input,
+html md-autocomplete-wrap input {
+  color: #d0d7e2 !important;
+  -webkit-text-fill-color: #d0d7e2 !important;
+  background-color: transparent !important;
+}
+
+/* The avatar glyph beside each message. Angular Material generates
+
+     md-list md-list-item .md-avatar-icon { color: rgb(31,31,31) }
+
+   because it expects the glyph to sit on a filled, coloured circle and picks
+   the contrasting ink for it. SOGo draws it on the bare list surface, so on a
+   dark theme it is #1f1f1f on #1f1f1f — a black silhouette on black. Give it
+   the circle Angular Material assumed, and ink that reads on it. */
+html md-list md-list-item .md-avatar-icon,
+html .view-list md-list-item .md-avatar-icon,
+html md-list-item .md-avatar-icon {
+  color: #d0d7e2 !important;
+  background-color: #323232 !important;
+  border-radius: 50% !important;
+}
+
+/* The mailbox quota line under the account name, and its progress bar. It
+   inherits the primary palette's foreground, which lands on a teal; the
+   accent is what belongs here. The warn state stays red — it is the one
+   signal in this strip that has to mean something. */
+html .sg-quota,
+html .sg-quota div { color: #ff8c00 !important; }
+html .sg-quota md-progress-linear .md-bar { background-color: #ff8c00 !important; }
+html .sg-quota md-progress-linear .md-container { background-color: #323232 !important; }
+html .sg-quota .md-warn,
+html .sg-quota div.md-warn { color: #ff6b6b !important; }
+html .sg-quota md-progress-linear.md-warn .md-bar { background-color: #ff6b6b !important; }
+
+/* Recipient and autocomplete placeholders. Angular Material gives chip-input
+   placeholders rgba(255,255,255,.5), but the address fields are an
+   md-autocomplete nested in md-chips and miss that rule, falling back to the
+   generic one further up this file. Stated here at a specificity nothing in
+   either stylesheet reaches. */
+html md-chips input::placeholder,
+html md-chips input::-webkit-input-placeholder,
+html md-chips .md-chip-input-container input::placeholder,
+html md-chips .md-chip-input-container input::-webkit-input-placeholder,
+html md-autocomplete input::placeholder,
+html md-autocomplete input::-webkit-input-placeholder,
+html md-autocomplete-wrap input::placeholder,
+html md-autocomplete-wrap input::-webkit-input-placeholder {
+  color: #9aa3b0 !important;
+  -webkit-text-fill-color: #9aa3b0 !important;
+  opacity: 1 !important;
+}
+html md-chips md-autocomplete input,
+html md-chips md-autocomplete-wrap input,
+html md-chips .md-chip-input-container md-autocomplete input {
+  color: #d0d7e2 !important;
+  -webkit-text-fill-color: #d0d7e2 !important;
+}
