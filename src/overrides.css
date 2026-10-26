@@ -586,3 +586,35 @@ html .sg-over-dropzone .sg-dropzone md-icon { color: #ff8c00 !important; }
 html .sg-attachment-size { color: #9aa3b0 !important; }
 html .button-label, html .pseudo-input-label { color: #9aa3b0 !important; }
 html mark { background-color: #ffd866 !important; color: #1f1f1f !important; }
+
+/* CKEditor tooltips and toolbar hover. The variables set earlier cover the
+   editor's surfaces but not its tooltip, which kept its own light default and
+   rendered pale text on a pale bubble. The hovered button needs saying too:
+   the hover background was themed, the icon on top of it was not. */
+:root {
+  --ck-color-tooltip-background: #181818;
+  --ck-color-tooltip-text: #d0d7e2;
+}
+html .ck.ck-tooltip .ck-tooltip__text,
+html .ck-tooltip .ck-tooltip__text,
+html .ck.ck-tooltip__text {
+  background: #181818 !important;
+  color: #d0d7e2 !important;
+}
+html .ck.ck-tooltip .ck-tooltip__arrow::after { border-top-color: #181818 !important; }
+
+html .ck.ck-button:hover,
+html .ck.ck-button:focus,
+html a.ck.ck-button:hover {
+  background: #323232 !important;
+  color: #d0d7e2 !important;
+}
+html .ck.ck-button:hover .ck-button__label,
+html .ck.ck-button:focus .ck-button__label { color: #d0d7e2 !important; }
+html .ck.ck-button:hover .ck-icon,
+html .ck.ck-button:focus .ck-icon,
+html .ck.ck-button .ck-icon { color: #d0d7e2 !important; }
+html .ck.ck-button .ck-icon :is(path, polygon, rect, circle, ellipse, line, polyline) {
+  fill: currentColor !important;
+}
+html .ck.ck-button.ck-on .ck-icon { color: #ff8c00 !important; }
