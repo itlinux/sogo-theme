@@ -447,3 +447,142 @@ html md-chips .md-chip-input-container md-autocomplete input {
   color: #d0d7e2 !important;
   -webkit-text-fill-color: #d0d7e2 !important;
 }
+
+/* Mini FABs — the ⊕ beside "Add a condition" and "Add an action", and the
+   save button in the preferences pane. Angular Material generates
+
+     .md-button.md-fab, .md-button.md-fab md-icon { color: rgba(0,0,0,0.87) }
+
+   because it assumes the circle is filled with the accent, where black ink is
+   correct. It is: the compose FAB is orange and its glyph should stay dark,
+   so these rules deliberately exclude .md-accent. The rest sit on a plain
+   grey circle and need the opposite. */
+html .md-button.md-fab.md-mini:not(.md-accent),
+html .md-button.md-fab.md-mini:not(.md-accent):not([disabled]) {
+  background-color: #323232 !important;
+  color: #d0d7e2 !important;
+}
+html .md-button.md-fab.md-mini:not(.md-accent) md-icon,
+html .md-button.md-fab.md-mini:not(.md-accent) .md-icon {
+  color: #d0d7e2 !important;
+}
+html .md-button.md-fab.md-mini:not(.md-accent):not([disabled]):hover {
+  background-color: #3d3d3d !important;
+}
+
+/* A disabled FAB should read as unavailable, not as a black glyph on grey —
+   and the circle's background must not be set on the glyph as well, which
+   paints over it. */
+html .md-button.md-fab[disabled] {
+  background-color: #3d3d3d !important;
+}
+html .md-button.md-fab[disabled] md-icon,
+html .md-button.md-fab[disabled] .md-icon {
+  background-color: transparent !important;
+  color: #9aa3b0 !important;
+}
+html .md-button.md-fab:not([disabled]):not(.md-accent) md-icon {
+  background-color: transparent !important;
+  color: #d0d7e2 !important;
+}
+
+/* The currently selected entry in a dropdown. Angular Material marks it with
+   a hue meant to sit on a light panel, so the one option you most need to see
+   — the setting as it stands — was the one rendering darkest. Accent instead,
+   which is what "this is the current value" should look like. */
+html md-select-menu md-option[selected],
+html md-select-menu md-option[selected] .md-text,
+html md-select-menu md-option.md-checked,
+html md-select-menu md-option.md-checked .md-text,
+html md-option[selected], html md-option[selected] .md-text {
+  color: #ff8c00 !important;
+}
+html md-select-menu md-option .md-text,
+html md-option .md-text { color: #d0d7e2 !important; }
+html md-select-menu md-option:hover,
+html md-select-menu md-option:focus { background-color: #323232 !important; }
+
+/* Radio buttons and checkboxes. The filled centre of a selected radio comes
+   out dark inside dialogs — a black dot in a pale ring. The accent is the
+   whole point of a selected control. */
+html md-radio-button .md-on,
+html md-radio-button.md-checked .md-on { background-color: #ff8c00 !important; }
+html md-radio-button.md-checked .md-off,
+html md-radio-button .md-off { border-color: #6b7280 !important; }
+html md-radio-button.md-checked .md-off { border-color: #ff8c00 !important; }
+html md-checkbox.md-checked .md-icon { background-color: #ff8c00 !important; }
+html md-checkbox .md-icon { border-color: #6b7280 !important; }
+html md-checkbox.md-checked .md-icon:after { border-color: #1f1f1f !important; }
+html md-radio-button .md-label, html md-checkbox .md-label { color: #d0d7e2 !important; }
+
+/* The save button in the preferences pane sits disabled until something
+   changes, and its glyph was coming through near-black on the grey circle. */
+html .md-button.md-fab[disabled] md-icon,
+html .md-button.md-fab[disabled] .md-icon { color: #9aa3b0 !important; }
+
+/* ===========================================================================
+   The root cause behind most of the dark-on-dark reported above.
+
+   Angular Material uses the PRIMARY palette as ink for anything marked
+   .md-primary — links, flat buttons, focused labels, active tabs, highlight
+   icons. In a stock SOGo install primary is a saturated green, so that ink
+   reads fine on a light surface. Here primary is #1f1f1f, a surface colour,
+   so every one of those rules paints near-black text on a near-black
+   background.
+
+   Found by scanning the generated theme for rules that set dark ink without
+   setting a light background of their own: 399 such rules across 28
+   components. These are the ones SOGo actually uses. Things that get a
+   filled accent background keep their dark ink, which is correct on orange.
+   =========================================================================== */
+html .md-button.md-primary:not(.md-raised):not(.md-fab),
+html md-icon.md-primary,
+html .md-subheader.md-primary,
+html a.md-primary, html ._md a.md-primary,
+html md-nav-bar .md-button,
+html md-toolbar md-nav-bar .md-button,
+html md-toast .md-toast-content .md-button.md-highlight,
+html md-slider .md-thumb-text,
+html .md-contact-suggestion span.md-contact-name {
+  color: #d0d7e2 !important;
+}
+
+/* Active, focused and selected states are exactly where the accent belongs. */
+html md-input-container.md-input-focused label,
+html md-input-container.md-input-focused .md-input-message-animation,
+html md-tab-item.md-active, html md-tab-item.md-focused,
+html md-nav-bar .md-button._md-nav-button.md-active,
+html md-list-item > md-icon.md-highlight,
+html md-switch.md-checked .md-thumb {
+  color: #ff8c00 !important;
+}
+html md-switch.md-checked .md-bar { background-color: rgba(255,140,0,.5) !important; }
+html md-switch.md-checked .md-thumb { background-color: #ff8c00 !important; }
+
+/* Tab labels, and the pagination arrows either side of them, which the theme
+   generates at rgba(0,0,0,1) — solid black on a dark toolbar. */
+html md-tab-item,
+html md-tabs md-tab-item:not([disabled]),
+html md-tabs-canvas md-tab-item,
+html md-pagination-wrapper md-tab-item,
+html md-tabs .md-prev-button, html md-tabs .md-next-button,
+html md-tabs md-prev-button md-icon, html md-tabs md-next-button md-icon {
+  color: #9aa3b0 !important;
+}
+
+/* The address suggested under a recipient field. The theme gives the email
+   line rgb(31,31,31) — the one part of a suggestion you need to read. */
+html .md-contact-suggestion span.md-contact-email,
+html .md-contact-suggestion .md-contact-email { color: #9aa3b0 !important; }
+html .md-contact-suggestion { color: #d0d7e2 !important; }
+
+/* Remaining light surfaces in SOGo's own stylesheet that nothing above
+   names: the scroll mask behind an open dialog, the generic whiteframe, and
+   the drop zone shown while dragging a message onto a folder. */
+html .md-scroll-mask > .md-scroll-mask-bar { background-color: #1f1f1f !important; }
+html [md-whiteframe], html md-whiteframe { background-color: #272727 !important; }
+html .sg-over-dropzone .sg-dropzone { background-color: #323232 !important; }
+html .sg-over-dropzone .sg-dropzone md-icon { color: #ff8c00 !important; }
+html .sg-attachment-size { color: #9aa3b0 !important; }
+html .button-label, html .pseudo-input-label { color: #9aa3b0 !important; }
+html mark { background-color: #ffd866 !important; color: #1f1f1f !important; }
