@@ -19,8 +19,8 @@ The Apache aliases go in `/etc/httpd/conf.d/00-sogo-theme.conf`. To revert,
 delete that file and reload httpd — nothing inside SOGo's package tree is
 modified at any point.
 
-`update.sh` and `deploy.sh` carry the author's own hostnames as defaults.
-Pass your own as arguments.
+Then put your own logo in place of SOGo's — see **Your logo, not mine**
+below. Nothing else needs editing to run it.
 
 ## Three things that will cost you an hour if nobody tells you
 
@@ -127,9 +127,27 @@ background from the browser, not from your stylesheet. Match the inset
 box-shadow to the surface underneath or the username lights up against
 everything around it the moment a password manager touches it.
 
-## Branding
+## Your logo, not mine
 
-See `brand/README.md`. No logos are shipped.
+No logos are shipped here, and the mark in this project's screenshots is
+the author's own. Swapping it for yours is two `scp`s and four `Alias` lines, with
+SOGo's own files left untouched:
+
+    scp my-logo.png my-mark.png HOST:/usr/local/share/sogo-theme/
+
+then in `/etc/httpd/conf.d/00-sogo-theme.conf`:
+
+    Alias /SOGo.woa/WebServerResources/img/sogo-full.svg    /usr/local/share/sogo-theme/my-logo.png
+    Alias /SOGo/WebServerResources/img/sogo-full.svg        /usr/local/share/sogo-theme/my-logo.png
+    Alias /SOGo.woa/WebServerResources/img/sogo-compact.svg /usr/local/share/sogo-theme/my-mark.png
+    Alias /SOGo/WebServerResources/img/sogo-compact.svg     /usr/local/share/sogo-theme/my-mark.png
+
+    systemctl reload httpd
+    touch /usr/lib64/GNUstep/SOGo/WebServerResources/css/theme-default.css
+
+A PNG behind a `.svg` path is fine — Apache types the response from the file
+on disk. Use a transparent background; the bar is dark. Full notes, including
+sizing and what cannot be rebranded, are in `brand/README.md`.
 
 ## Restarting sogod
 
