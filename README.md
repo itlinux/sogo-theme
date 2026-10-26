@@ -129,9 +129,9 @@ everything around it the moment a password manager touches it.
 
 ## Your logo, not mine
 
-No logos are shipped here, and the mark in this project's screenshots is
-the author's own. Swapping it for yours is two `scp`s and four `Alias` lines, with
-SOGo's own files left untouched:
+No logos are shipped here. SOGo's own marks stay on disk untouched and are
+shadowed by Apache aliases, so a package upgrade cannot undo your branding
+and deleting the config file puts SOGo's back. Two `scp`s and four lines:
 
     scp my-logo.png my-mark.png HOST:/usr/local/share/sogo-theme/
 
