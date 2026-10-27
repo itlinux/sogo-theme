@@ -30,6 +30,14 @@ Alias /SOGo/WebServerResources/img/sogo-full.svg /usr/local/share/sogo-theme/you
 Alias /SOGo.woa/WebServerResources/img/sogo-compact.svg /usr/local/share/sogo-theme/your-mark.png
 Alias /SOGo/WebServerResources/img/sogo-compact.svg /usr/local/share/sogo-theme/your-mark.png
 
+# SOGo.conf puts a one-year Expires on WebServerResources, and the logo URL
+# carries no ?lm= cache-buster the way the stylesheet does. Without this, a
+# replaced logo stays invisible until the visitor clears their cache.
+<LocationMatch "/WebServerResources/img/sogo-(full|compact)\.svg$">
+  ExpiresActive Off
+  Header set Cache-Control "no-cache, must-revalidate"
+</LocationMatch>
+
 <Directory /usr/local/share/sogo-theme>
     Require all granted
 </Directory>
