@@ -633,3 +633,23 @@ html .ck.ck-button .ck-icon :is(path, polygon, rect, circle, ellipse, line, poly
   fill: currentColor !important;
 }
 html .ck.ck-button.ck-on .ck-icon { color: #ff8c00 !important; }
+
+/* HTML mail is rendered inline in the page, not in an iframe
+   (UIxMailViewTemplate.wox, div.mailer_htmlcontent), so the theme's light
+   text colour inherits straight into the message. A sender who laid their
+   mail out on white — most newsletters and every receipt — then arrives as
+   white on white.
+
+   Give the HTML part its own light surface and a dark default, and set it
+   WITHOUT !important: an inherited value always loses to a declaration, so
+   this beats the theme, while the sender's own colours still beat this.
+   The plain-text part has no styling of its own and stays on the dark theme. */
+html .view-detail .mailer_htmlcontent {
+  background-color: #ffffff;
+  color: #202020;
+  border-radius: 4px;
+  padding: 8px;
+}
+html .view-detail .mailer_htmlcontent * { color: #202020; }
+html .view-detail .mailer_htmlcontent a { color: #0b57d0; }
+html .view-detail .mailer_htmlcontent blockquote { border-left: 2px solid #c7c7c7; }
