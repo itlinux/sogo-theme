@@ -619,51 +619,30 @@ html .ck.ck-button .ck-icon :is(path, polygon, rect, circle, ellipse, line, poly
 }
 html .ck.ck-button.ck-on .ck-icon { color: #ff8c00 !important; }
 
-/* HTML mail is rendered inline in the page, not in an iframe
-   (UIxMailViewTemplate.wox, div.mailer_htmlcontent), so the theme's light
-   text colour inherits straight into the message. A sender who laid their
-   mail out on white — most newsletters and every receipt — then arrives as
-   white on white.
+/* Leave the message as the sender built it, the way Mail.app does.
 
-   Give the HTML part its own light surface and a dark text colour.
+   Mail does not theme mail. It shows each message as sent and only picks
+   which of the sender's own designs to use, so a plain mail stays light and
+   one that ships a prefers-color-scheme: dark block comes out dark. SOGo
+   renders the HTML part inline in the page DOM (div.mailer_htmlcontent,
+   Templates/MailerUI/UIxMailViewTemplate.wox), so the only thing that has to
+   be stopped is the reading pane's colour and -webkit-text-fill-color
+   inheriting into it -- that is what left light text on a sender's white
+   layout. Setting both on the container ends the inheritance there; anything
+   the sender coloured still wins, dark-mode blocks included.
 
-   This has to be !important, and that costs the sender's text colours. A
-   mail carrying its own prefers-color-scheme: dark block -- SOGo rewrites it
-   as .SOGoHTMLMail-CSS-Delimiter rules on the page -- matches whenever the
-   READER's OS is in dark mode, and paints light text for a dark background
-   it cannot give itself here. Nothing in CSS can stop that block matching,
-   so the default has to outrank it. Backgrounds, images and layout are left
-   to the sender; only text colour is taken.
+   -webkit-text-fill-color is not optional. The reading pane sets it on
+   md-card-content, it inherits, and wherever it is set it paints the text
+   whatever `color` says. A rule that sets only colour shows as applied in
+   the inspector and changes nothing on screen.
 
-   -webkit-text-fill-color has to be set alongside every colour here. The
-   reading pane's own rule sets it on md-card-content, it INHERITS into the
-   message, and where it is set it paints the text whatever `color` says.
-   Setting colour alone here looks right in the inspector and changes nothing
-   on screen.
-
-   The plain-text part has no styling of its own and stays on the dark theme. */
+   Forcing the theme onto the message instead was tried and rejected: it
+   reads as dark but takes every sender colour with it, and transparent
+   logos then need a white plate, which puts white squares mid-message. */
 html .mailer_htmlcontent {
-  background-color: #272727;
+  background-color: #ffffff;
+  color: #202020;
+  -webkit-text-fill-color: #202020;
   border-radius: 4px;
   padding: 8px;
 }
-html .mailer_htmlcontent, html .mailer_htmlcontent * {
-  color: #d0d7e2 !important;
-  -webkit-text-fill-color: #d0d7e2 !important;
-}
-html .mailer_htmlcontent a, html .mailer_htmlcontent a * {
-  color: #ff8c00 !important;
-  -webkit-text-fill-color: #ff8c00 !important;
-}
-/* The senders' own surfaces have to go with it: nearly every mail paints
-   itself white, by CSS or by a bgcolor attribute, and light text on those
-   is the same fault the other way round. Background IMAGES are left alone,
-   so hero artwork survives. */
-html .mailer_htmlcontent * { background-color: transparent !important; }
-html .mailer_htmlcontent blockquote { border-left: 2px solid #4a4a4a !important; }
-/* Logos are usually dark artwork on transparency, and the rule above just
-   took away the white cell they were drawn for. Give every image its own
-   white plate: an opaque photo covers it and never shows it, a transparent
-   logo gets back the background it expects. A logo drawn in white for a dark
-   mail is the case this loses, and it is the rarer one. */
-html .mailer_htmlcontent img { background-color: #ffffff !important; }
