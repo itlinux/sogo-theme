@@ -640,16 +640,45 @@ html .ck.ck-button.ck-on .ck-icon { color: #ff8c00 !important; }
    mail out on white — most newsletters and every receipt — then arrives as
    white on white.
 
-   Give the HTML part its own light surface and a dark default, and set it
-   WITHOUT !important: an inherited value always loses to a declaration, so
-   this beats the theme, while the sender's own colours still beat this.
+   Give the HTML part its own light surface and a dark text colour.
+
+   This has to be !important, and that costs the sender's text colours. A
+   mail carrying its own prefers-color-scheme: dark block -- SOGo rewrites it
+   as .SOGoHTMLMail-CSS-Delimiter rules on the page -- matches whenever the
+   READER's OS is in dark mode, and paints light text for a dark background
+   it cannot give itself here. Nothing in CSS can stop that block matching,
+   so the default has to outrank it. Backgrounds, images and layout are left
+   to the sender; only text colour is taken.
+
+   -webkit-text-fill-color has to be set alongside every colour here. The
+   reading pane's own rule sets it on md-card-content, it INHERITS into the
+   message, and where it is set it paints the text whatever `color` says.
+   Setting colour alone here looks right in the inspector and changes nothing
+   on screen.
+
    The plain-text part has no styling of its own and stays on the dark theme. */
-html .view-detail .mailer_htmlcontent {
-  background-color: #ffffff;
-  color: #202020;
+html .mailer_htmlcontent {
+  background-color: #272727;
   border-radius: 4px;
   padding: 8px;
 }
-html .view-detail .mailer_htmlcontent * { color: #202020; }
-html .view-detail .mailer_htmlcontent a { color: #0b57d0; }
-html .view-detail .mailer_htmlcontent blockquote { border-left: 2px solid #c7c7c7; }
+html .mailer_htmlcontent, html .mailer_htmlcontent * {
+  color: #d0d7e2 !important;
+  -webkit-text-fill-color: #d0d7e2 !important;
+}
+html .mailer_htmlcontent a, html .mailer_htmlcontent a * {
+  color: #ff8c00 !important;
+  -webkit-text-fill-color: #ff8c00 !important;
+}
+/* The senders' own surfaces have to go with it: nearly every mail paints
+   itself white, by CSS or by a bgcolor attribute, and light text on those
+   is the same fault the other way round. Background IMAGES are left alone,
+   so hero artwork survives. */
+html .mailer_htmlcontent * { background-color: transparent !important; }
+html .mailer_htmlcontent blockquote { border-left: 2px solid #4a4a4a !important; }
+/* Logos are usually dark artwork on transparency, and the rule above just
+   took away the white cell they were drawn for. Give every image its own
+   white plate: an opaque photo covers it and never shows it, a transparent
+   logo gets back the background it expects. A logo drawn in white for a dark
+   mail is the case this loses, and it is the rarer one. */
+html .mailer_htmlcontent img { background-color: #ffffff !important; }
